@@ -1,0 +1,14 @@
+# container stack for local development
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:14.11
+    container_name: "postgres"
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: file_storage
+      POSTGRES_USER: vladislavmedvedev
+      POSTGRES_PASSWORD: 123
+    restart: always
