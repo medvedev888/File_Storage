@@ -1,13 +1,16 @@
-# container stack for local development
 version: "3.9"
 
 services:
+  app:
+    image: file_storage
+    ports:
+      - "8082:8080"
   postgres:
     image: postgres:14.11
     container_name: "postgres"
     ports:
       - "5433:5432"
-    environment:
+    environment: #TODO: change user, password
       POSTGRES_DB: file_storage
       POSTGRES_USER: vladislavmedvedev
       POSTGRES_PASSWORD: 123
