@@ -1,15 +1,19 @@
 # container stack for local development
 version: "3.9"
+
 services:
   postgres:
     image: postgres:14.11
-    container_name: "postgres"
+    container_name: "postgres-dev"
     volumes:
-      -
+      - postgres_data_file_storage_dev:/var/lib/postgres/data/
     ports:
-      - "5433:5432"
+      - "5434:5432"
     environment:
       POSTGRES_DB: file_storage
       POSTGRES_USER: vladislavmedvedev
       POSTGRES_PASSWORD: 123
     restart: always
+
+volumes:
+  postgres_data_file_storage_dev:
