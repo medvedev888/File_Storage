@@ -1,8 +1,10 @@
 spring:
   datasource:
-    url: jdbc:postgresql://127.0.0.1:5433/file_storage
+    url: jdbc:postgresql://127.0.0.1:5434/file_storage
     username: vladislavmedvedev
     password: 123
-    driver-class-name: org.postgresql.Driver
   jpa:
+    database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create-drop
