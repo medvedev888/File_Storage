@@ -18,7 +18,7 @@
                            placeholder="Enter your login (must be between 3 and 50 characters long.)" required>
                     <div>
                         <!--                        TODO: add error display-->
-<!--                        <p class="alert alert-danger p-2" role="alert"></p>-->
+                        <p th:if="${#fields.hasErrors('login')}" th:errors="*{login}" class="alert alert-danger p-2" role="alert"></p>
                     </div>
                 </div>
                 <div class="mb-3">
@@ -27,7 +27,7 @@
                            placeholder="Enter your password (must be between 8 and 64 characters long." required>
                     <div>
                         <!--                        TODO: add error display-->
-<!--                        <p class="alert alert-danger p-2" role="alert"></p>-->
+                        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="alert alert-danger p-2" role="alert"></p>
                     </div>
                 </div>
                 <div class="mb-3">
