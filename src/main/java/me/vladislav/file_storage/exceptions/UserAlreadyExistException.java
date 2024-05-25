@@ -1,4 +1,4 @@
-package me.vladislav.file_storage;
+package me.vladislav.file_storage.exceptions;
 
 public class UserAlreadyExistException extends RuntimeException {
     public UserAlreadyExistException(String message) {
