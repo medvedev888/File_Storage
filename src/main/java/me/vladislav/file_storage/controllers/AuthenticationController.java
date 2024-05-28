@@ -1,5 +1,6 @@
 package me.vladislav.file_storage.controllers;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import me.vladislav.file_storage.dto.UserDTO;
@@ -31,14 +32,22 @@ public class AuthenticationController {
     @PostMapping("/registration")
     public String register(
             @ModelAttribute("user") @Valid UserDTO userDTO,
-            BindingResult bindingResult) {
+            BindingResult bindingResult,
+            HttpServletRequest request,
+            Model model) {
 
         if (bindingResult.hasErrors()) {
             return "auth/registration";
         } else {
             userService.registerNewUserAccount(userDTO);
-            return "redirect:home";
+            try {
+                request.login(userDTO.getLogin(), userDTO.getPassword());
+            } catch (Exception e){
+                model.addAttribute("loginError", "Login failed. Please check your credentials.");
+                return "auth/authorization";
+            }
+            return "redirect:/";
         }
-
     }
+
 }
