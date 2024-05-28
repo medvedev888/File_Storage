@@ -18,8 +18,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id")
     private Long id;
+
     @Column(name = "login", unique = true, nullable = false)
     private String login;
+
     @Column(name = "password", nullable = false)
     private String password;
 
