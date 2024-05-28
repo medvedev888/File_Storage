@@ -16,27 +16,24 @@
                     <label for="login" class="form-label">Login</label>
                     <input type="text" class="form-control" id="login" name="login"
                            placeholder="Enter your login (must be between 3 and 50 characters long.)" required>
-
-                    <div>
-                        <!--                        TODO: add error display-->
-<!--                        <p class="alert alert-danger p-2" role="alert"></p>-->
-                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
                     <input type="password" class="form-control" id="password" name="password"
                            placeholder="Enter your password (must be between 8 and 64 characters long." required>
-
-                    <div>
-                        <!--                        TODO: add error display-->
-<!--                        <p class="alert alert-danger p-2" role="alert"></p>-->
-                    </div>
                 </div>
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
                 <p>Don't have an account yet - <a th:href="@{/registration}">Registration</a>
                 <p>
+
+                <div th:if="${param.error}" class="alert alert-danger" role="alert">
+                    Invalid login or password.
+                </div>
+                <div th:if="${loginError}" class="alert alert-danger" role="alert">
+                    <span th:text="${loginError}"></span>
+                </div>
             </form>
         </div>
     </div>
