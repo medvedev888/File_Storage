@@ -1,5 +1,6 @@
 package me.vladislav.file_storage.controllers;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +43,7 @@ public class AuthenticationController {
             userService.registerNewUserAccount(userDTO);
             try {
                 request.login(userDTO.getLogin(), userDTO.getPassword());
-            } catch (Exception e){
+            } catch (ServletException e) {
                 model.addAttribute("loginError", "Login failed. Please check your credentials.");
                 return "auth/authorization";
             }
