@@ -1,8 +1,7 @@
-package me.vladislav.file_storage;
+package me.vladislav.file_storage.integration;
 
 import me.vladislav.file_storage.models.User;
 import me.vladislav.file_storage.repositories.UserRepository;
-import me.vladislav.file_storage.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +32,7 @@ public class UserRegistrationIntegrationTest {
             .withDatabaseName("test")
             .withUsername("test")
             .withPassword("test");
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -42,9 +42,6 @@ public class UserRegistrationIntegrationTest {
         registry.add("spring.datasource.username", postgresContainer::getUsername);
         registry.add("spring.datasource.password", postgresContainer::getPassword);
     }
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private UserRepository userRepository;
@@ -63,20 +60,17 @@ public class UserRegistrationIntegrationTest {
         String login = "maks_dubov";
         String password = "123123123";
 
-
-        mockMvc.perform(post("/registration").param("login", login)
+        mockMvc.perform(post("/registration")
+                        .param("login", login)
                         .param("password", password))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"));
-
 
         User user = userRepository.findUserByLogin(login).orElse(null);
         assertEquals(login, user.getLogin());
         assertTrue(passwordEncoder.matches(password, user.getPassword()));
 
     }
-
-    //TODO: will need more tests (min 2: check exception in User Service and check input validation)
 
 }
 
