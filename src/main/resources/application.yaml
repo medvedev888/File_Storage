@@ -1,5 +1,20 @@
 spring:
-  profiles:
-    active: dev
+
   datasource:
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    url: jdbc:postgresql://postgres:5432/file_storage
     driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+
+  minio:
+    client:
+      endpoint: http://minio:9000
+      username: ${MINIO_USER}
+      password: ${MINIO_PASSWORD}
+      bucket-name: user-files
