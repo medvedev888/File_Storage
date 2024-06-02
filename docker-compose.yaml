@@ -2,15 +2,17 @@ version: "3.9"
 
 services:
   app:
+    build: .
     image: file_storage
     container_name: "file_storage_app"
     ports:
       - "8082:8080"
     environment:
+      SPRING_PROFILES_ACTIVE: prod
       POSTGRES_DB: file_storage
-      MINIO_URL: http://minio:9000
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      MINIO_URL: http://minio:9000
       MINIO_USER: ${MINIO_USER}
       MINIO_PASSWORD: ${MINIO_PASSWORD}
     depends_on:
@@ -18,12 +20,13 @@ services:
       - minio
     restart: always
 
-
   postgres:
     image: postgres:14.11
     container_name: "postgres"
     volumes:
-      - postgres_data_file_storage:/var/lib/postgres/data/
+      - postgres_data_file_storage:/var/lib/postgresql/data
+    ports:
+      - "5438:5432"
     environment:
       POSTGRES_DB: file_storage
       POSTGRES_USER: ${POSTGRES_USER}
