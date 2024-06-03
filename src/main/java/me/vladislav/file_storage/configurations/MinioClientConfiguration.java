@@ -1,24 +1,26 @@
 package me.vladislav.file_storage.configurations;
 
 import io.minio.MinioClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 
 @Configuration
-public class MinioConfiguration {
+public class MinioClientConfiguration {
+
+    @Value("${spring.minio.client.endpoint}")
     private String endpoint;
+
+    @Value("${spring.minio.client.username}")
     private String username;
+
+    @Value("${spring.minio.client.password}")
     private String password;
 
     @Bean
-    public MinioClient minioClient(Environment env){
-        endpoint = env.getProperty("spring.minio.client.endpoint");
-        username = env.getProperty("spring.minio.client.username");
-        password = env.getProperty("spring.minio.client.password");
+    public MinioClient minioClient() {
 
-        MinioClient minioClient = MinioClient
-                .builder()
+        MinioClient minioClient = MinioClient.builder()
                 .endpoint(endpoint)
                 .credentials(username, password)
                 .build();

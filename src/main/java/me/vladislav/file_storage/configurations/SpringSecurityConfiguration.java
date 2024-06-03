@@ -15,6 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfiguration {
+
     @Qualifier("customUserDetailsService")
     private final UserDetailsService userDetailsService;
 
@@ -63,4 +64,5 @@ public class SpringSecurityConfiguration {
     public SpringSecurityConfiguration(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
+
 }
