@@ -1,0 +1,13 @@
+<div th:fragment="header">
+    <header class="d-flex py-3 mb-4 border-bottom align-items-center">
+        <div class="container d-flex flex-row justify-content-start align-items-center">
+            <h3>File Storage</h3>
+        </div>
+        <div class="container d-flex flex-row justify-content-end align-items-center">
+            <div class="me-4" th:if="${login != null}" th:text="${login}">Login</div>
+            <form action="/logout" method="post">
+                <button class="btn btn-primary">Logout</button>
+            </form>
+        </div>
+    </header>
+</div>
