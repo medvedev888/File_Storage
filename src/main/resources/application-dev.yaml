@@ -14,7 +14,7 @@ spring:
 
   minio:
     client:
-      endpoint: http://localhost:9000
+      endpoint: http://localhost:9002
       username: vladislavmedvedev
       password: 123123123
       bucket-name: user-files

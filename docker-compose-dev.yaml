@@ -25,7 +25,8 @@ services:
       - MINIO_ROOT_USER=vladislavmedvedev
       - MINIO_ROOT_PASSWORD=123123123
     ports:
-      - "9002:9001"
+      - "9002:9000"
+      - "9003:9001"
     restart: always
 
 
