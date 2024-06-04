@@ -6,13 +6,44 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Home</title>
 </head>
-    <body>
-        <div class="container">
-            <div th:replace="~{fragments/header-fragment.html::header(login=${login})}"></div>
-        </div>
+<body>
+<div class="container">
+    <div th:replace="~{fragments/header-fragment.html::header(login=${login})}"></div>
+</div>
+<!--    breadcrumbs-->
+<div class="container">
+<!--    TODO: make normal breadcrumbs -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0 ps-4 py-3 border-bottom">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Library</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Data</li>
+        </ol>
+    </nav>
+</div>
+<!--    control panel-->
+<div class="container d-flex py-3">
+    <div class="container d-flex justify-content-start w-auto">
+        <button class="btn btn-primary">Create Folder</button>
+    </div>
+    <form class="container d-flex w-50">
+        <input class="form-control me-1" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+    <div class="container d-flex justify-content-end w-auto">
+        <button class="me-2 btn btn-primary">Upload File</button>
+        <button class="btn btn-primary">Upload Folder</button>
+    </div>
+</div>
+<div class="container py-3 border rounded-1 h-auto">
+    <!--    TODO: add display of objects (folders and files)-->
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-                crossorigin="anonymous"></script>
-    </body>
+    <div class="w-50">
+        <p>hello</p>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
 </html>
