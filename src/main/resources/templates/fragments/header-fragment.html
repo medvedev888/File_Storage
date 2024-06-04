@@ -1,13 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Header</title>
+</head>
+<body>
 <div th:fragment="header">
     <header class="d-flex py-3 border-bottom align-items-center">
         <div class="container d-flex flex-row justify-content-start align-items-center">
             <h3>File Storage</h3>
         </div>
         <div class="container d-flex flex-row justify-content-end align-items-center">
-            <div class="me-4" th:if="${login != null}" th:text="${login}">Login</div>
+            <div class="me-4" sec:authorize="isAuthenticated()" sec:authentication="name">Login</div>
             <form action="/logout" method="post">
                 <button class="btn btn-primary">Logout</button>
             </form>
         </div>
     </header>
 </div>
+</body>
+</html>
