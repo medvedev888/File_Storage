@@ -1,8 +1,9 @@
 package me.vladislav.file_storage.services;
 
 import lombok.RequiredArgsConstructor;
-import me.vladislav.file_storage.exceptions.UserAlreadyExistException;
+import me.vladislav.file_storage.exceptions.users.UserAlreadyExistException;
 import me.vladislav.file_storage.dto.UserDTO;
+import me.vladislav.file_storage.exceptions.users.UserNotFoundException;
 import me.vladislav.file_storage.models.User;
 import me.vladislav.file_storage.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,4 +30,9 @@ public class UserService {
 
         userRepository.save(user);
     }
+
+    public User getUserByLogin(String login){
+        return userRepository.findUserByLogin(login).orElseThrow(() -> new UserNotFoundException("Error when getting user by login. User not found."));
+    }
+
 }
