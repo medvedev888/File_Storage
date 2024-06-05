@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import me.vladislav.file_storage.dto.UserDTO;
+import me.vladislav.file_storage.services.FolderService;
 import me.vladislav.file_storage.services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class AuthenticationController {
 
     private final UserService userService;
+    private final FolderService folderService;
 
     @GetMapping("/authorization")
     public String showAuthorizationPage() {
@@ -43,6 +45,7 @@ public class AuthenticationController {
             userService.registerNewUserAccount(userDTO);
             try {
                 request.login(userDTO.getLogin(), userDTO.getPassword());
+                folderService.createFolder("/","user-" + userService.getUserByLogin(userDTO.getLogin()).getId() + "-files");
             } catch (ServletException e) {
                 model.addAttribute("loginError", "Login failed. Please check your credentials.");
                 return "auth/authorization";
