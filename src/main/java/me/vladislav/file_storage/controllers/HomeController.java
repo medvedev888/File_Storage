@@ -1,5 +1,6 @@
 package me.vladislav.file_storage.controllers;
 
+import me.vladislav.file_storage.dto.FolderCreateDTO;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -15,7 +16,7 @@ public class HomeController {
             @AuthenticationPrincipal User user,
             Model model
     ) {
-        model.addAttribute("login", user.getUsername());
+        model.addAttribute("folderCreateDTO", new FolderCreateDTO());
         return "home";
     }
 }
