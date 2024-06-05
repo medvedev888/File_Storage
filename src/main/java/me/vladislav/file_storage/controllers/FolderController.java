@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import me.vladislav.file_storage.dto.FolderCreateDTO;
 import me.vladislav.file_storage.services.FolderService;
 import me.vladislav.file_storage.services.UserService;
+import me.vladislav.file_storage.utils.PathUtils;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -24,14 +25,14 @@ public class FolderController {
             @AuthenticationPrincipal User user,
             @ModelAttribute("folderCreateDTO") @Valid FolderCreateDTO folderCreateDTO,
             BindingResult bindingResult
-            ) {
+    ) {
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             //TODO: need to add exception handling
         } else {
             me.vladislav.file_storage.models.User currentUser = userService.getUserByLogin(user.getUsername());
 
-            folderService.createFolder("/user-" + currentUser.getId() + "-files/" + folderCreateDTO.getRootFolderPath(), folderCreateDTO.getNameOfNewFolder());
+            folderService.createFolder(PathUtils.getRootPath(folderCreateDTO.getRootFolderPath(), currentUser.getId()), folderCreateDTO.getNameOfNewFolder());
         }
 
         return "redirect:" + folderCreateDTO.getRootFolderPath();
