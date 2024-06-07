@@ -14,7 +14,16 @@ public class PathUtilsTest {
 
         String resultPath = PathUtils.getRootPath(path, userID);
 
-        assertEquals("/user-123-files/haha/", resultPath);
+        assertEquals("user-123-files/haha/", resultPath);
 
+    }
+
+    @Test
+    void shouldReturnValidFolderNameWithoutPath() {
+        String folderName = "user-123-files/folder-1/folder-2/";
+
+        String resultFolderName = PathUtils.getPathWithoutRootUserFolder(folderName);
+
+        assertEquals("folder-1/folder-2/", resultFolderName);
     }
 }
