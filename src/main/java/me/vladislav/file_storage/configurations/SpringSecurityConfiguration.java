@@ -25,7 +25,7 @@ public class SpringSecurityConfiguration {
     }
 
     @Bean
-    public DaoAuthenticationProvider daoAuthenticationConfigurer(){
+    public DaoAuthenticationProvider daoAuthenticationConfigurer() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
 
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
@@ -36,7 +36,6 @@ public class SpringSecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        //TODO: maybe will need to change parameters of filter chain
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
