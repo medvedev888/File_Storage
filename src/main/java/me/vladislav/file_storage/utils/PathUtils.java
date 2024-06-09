@@ -6,6 +6,16 @@ public class PathUtils {
         return getValidPath(getPathWithRootUserFolder(userID) + path);
     }
 
+    public static String getPathWithoutRootUserFolder(String path) {
+        path = getValidPath(path);
+        for(int i = 0; i < path.length(); i++) {
+            if(path.charAt(i) == '/') {
+                return path.substring(i + 1);
+            }
+        }
+        return path;
+    }
+
     public static String getPathWithRootUserFolder(Long userID) {
         return "user-" + userID + "-files/";
     }
