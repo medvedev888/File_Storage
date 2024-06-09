@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import me.vladislav.file_storage.dto.MinioObjectDTO;
 import me.vladislav.file_storage.exceptions.folders.FolderCreationException;
 import me.vladislav.file_storage.exceptions.folders.RetrievingFoldersException;
-import me.vladislav.file_storage.utils.PathUtils;
+import me.vladislav.file_storage.utils.FolderUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -51,7 +51,14 @@ public class FolderService {
 
             for (Result<Item> result : results) {
                 Item item = result.get();
-                listOfFolders.add(new MinioObjectDTO(path, PathUtils.getPathWithoutRootUserFolder(item.objectName()), item.objectName().endsWith("/")));
+                String name = FolderUtils.getNameOfCurrentFolderByPath(item.objectName());
+
+                if (!name.equals(FolderUtils.getNameOfCurrentFolderByPath(path))) {
+
+                    String owner = FolderUtils.getOwnerFolder(path, name);
+
+                    listOfFolders.add(new MinioObjectDTO(path, name, owner, item.objectName().endsWith("/")));
+                }
             }
             return listOfFolders;
         } catch (Exception e) {
