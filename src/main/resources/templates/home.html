@@ -42,7 +42,7 @@
         <li class="list-group-item d-flex align-items-center my-1 border bg-body rounded">
             <img th:src="@{/img/folder_image.png}"
                  style="width: 1.5rem;" class="d-inline-flex justify-content-start me-4" alt="Folder">
-            <a th:href="@{'/?path=' + ${folder.getName()} + '/'}" class="d-inline-flex flex-grow-1 text-decoration-none" th:text="${folder.getName()}"></a>
+            <a th:href="@{'/?path=' + ${folder.getPath()} + ${folder.getName()} + '/'}" class="d-inline-flex flex-grow-1 text-decoration-none" th:text="${folder.getName()}"></a>
             <button type="button" class="btn btn-primary btn-sm d-inline-flex justify-content-end" data-bs-toggle="dropdown"
                     aria-expanded="false">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"

@@ -10,6 +10,7 @@ import me.vladislav.file_storage.dto.MinioObjectDTO;
 import me.vladislav.file_storage.exceptions.folders.FolderCreationException;
 import me.vladislav.file_storage.exceptions.folders.RetrievingFoldersException;
 import me.vladislav.file_storage.utils.FolderUtils;
+import me.vladislav.file_storage.utils.PathUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -57,7 +58,7 @@ public class FolderService {
 
                     String owner = FolderUtils.getOwnerFolder(path, name);
 
-                    listOfFolders.add(new MinioObjectDTO(path, name, owner, item.objectName().endsWith("/")));
+                    listOfFolders.add(new MinioObjectDTO(PathUtils.getPathWithoutRootUserFolder(path), name, owner, item.objectName().endsWith("/")));
                 }
             }
             return listOfFolders;
