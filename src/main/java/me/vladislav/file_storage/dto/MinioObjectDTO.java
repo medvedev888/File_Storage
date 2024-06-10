@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MinioObjectDTO {
-    //TODO: need to add validation using regular expression
     private String path;
     private String name;
     private String owner;
