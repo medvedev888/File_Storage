@@ -2,6 +2,14 @@ package me.vladislav.file_storage.utils;
 
 public class PathUtils {
 
+    public static String getPathWithoutCurrentFolder(String path, String currentFolderName) {
+        path = getValidPath(path);
+        if(path.isEmpty() || !path.contains(currentFolderName)) {
+            return path;
+        }
+        return path.substring(0, path.indexOf(currentFolderName));
+    }
+
     public static String getRootPath(String path, Long userID) {
         return getValidPath(getPathWithRootUserFolder(userID) + path);
     }
