@@ -14,9 +14,9 @@
 <div class="container">
     <!--    TODO: make normal breadcrumbs -->
     <nav aria-label="breadcrumb">
-        <ol class="breadcrumb mb-0 ps-4 py-3 border-bottom">
-            <li class="breadcrumb-item">
-                <a th:href="@{/}" th:with="path='/'">Home</a>
+        <ol class="breadcrumb mb-0 ps-4 py-3 border-bottom" >
+            <li class="breadcrumb-item" th:each="link : ${breadcrumbsMap.entrySet()}">
+                <a th:href="@{'/?path=' + ${link.getValue()}}" th:text="${link.getKey()}">Link</a>
             </li>
         </ol>
     </nav>
