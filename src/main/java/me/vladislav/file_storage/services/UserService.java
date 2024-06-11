@@ -19,8 +19,7 @@ public class UserService {
     public void registerNewUserAccount(UserDTO userDTO){
 
         if(userRepository.findUserByLogin(userDTO.getLogin()).isPresent()){
-            //TODO: Need to display this exception in /registration in the advanced controller
-            throw new UserAlreadyExistException("A user with that login exists");
+            throw new UserAlreadyExistException("A user with login \"" + userDTO.getLogin() + "\" already exists.");
         }
 
         User user = new User(

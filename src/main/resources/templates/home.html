@@ -7,20 +7,26 @@
     <title>Home</title>
 </head>
 <body>
+<!-- header -->
 <div class="container">
     <div th:replace="~{fragments/header-fragment.html::header}"></div>
 </div>
+
 <!--    breadcrumbs-->
 <div class="container">
-    <!--    TODO: make normal breadcrumbs -->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-0 ps-4 py-3 border-bottom" >
-            <li class="breadcrumb-item" th:each="link : ${breadcrumbsMap.entrySet()}">
-                <a th:href="@{'/?path=' + ${link.getValue()}}" th:text="${link.getKey()}">Link</a>
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" th:href="@{'/'}">Home</a>
+            </li>
+            <li class="breadcrumb-item" th:each="link, iterStat : ${breadcrumbsMap.entrySet()}">
+                <a class="text-decoration-none" th:classappend="${iterStat.last ? 'breadcrumb-item active' : ''}"
+                   th:href="@{'/?path=' + ${link.getValue()}}" th:text="${link.getKey()}">Link</a>
             </li>
         </ol>
     </nav>
 </div>
+
 <!--    control panel-->
 <div class="container d-flex py-3">
     <div class="container d-flex justify-content-start w-auto">
@@ -36,7 +42,8 @@
         <button class="btn btn-primary">Upload Folder</button>
     </div>
 </div>
-<!--    TODO: add display of objects (folders and files)-->
+
+<!--    TODO: add file display-->
 <div class="container my-4">
     <ul class="list-group list-group-flush" th:each="folder : ${listOfFolders}">
         <li class="list-group-item d-flex align-items-center my-1 border bg-body rounded">
@@ -58,9 +65,10 @@
     </ul>
 </div>
 
+<!-- modals -->
 <div th:replace="~{modals/create-folder-modal.html}"></div>
 
-<!--TODO: need to add failure and success message to users-->
+<!--TODO: need to add failure and success message to users (example: when user create folder with incorrect folder name)-->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
