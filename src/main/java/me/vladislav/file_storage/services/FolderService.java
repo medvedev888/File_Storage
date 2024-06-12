@@ -63,7 +63,7 @@ public class FolderService {
             }
             return listOfFolders;
         } catch (Exception e) {
-            throw new RetrievingFoldersException("Error when creating folder.", e);
+            throw new RetrievingFoldersException("Error when retrieving folders.", e);
         }
     }
 }
