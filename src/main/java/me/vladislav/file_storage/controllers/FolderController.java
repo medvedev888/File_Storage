@@ -3,6 +3,7 @@ package me.vladislav.file_storage.controllers;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import me.vladislav.file_storage.dto.FolderCreateDTO;
+import me.vladislav.file_storage.exceptions.folders.FolderCreationException;
 import me.vladislav.file_storage.services.FolderService;
 import me.vladislav.file_storage.services.UserService;
 import me.vladislav.file_storage.utils.PathUtils;
@@ -28,7 +29,11 @@ public class FolderController {
     ) {
 
         if (bindingResult.hasErrors()) {
-            //TODO: need to add exception handling
+            String errorMessage = bindingResult.getFieldError("nameOfNewFolder") != null ?
+                    bindingResult.getFieldError("nameOfNewFolder").getDefaultMessage() :
+                    "Invalid folder name";
+
+            throw new FolderCreationException(errorMessage);
         } else {
             me.vladislav.file_storage.models.User currentUser = userService.getUserByLogin(user.getUsername());
 

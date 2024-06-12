@@ -1,22 +1,28 @@
 package me.vladislav.file_storage.controllers.advice;
 
-import me.vladislav.file_storage.dto.UserDTO;
+import jakarta.servlet.http.HttpServletResponse;
+import me.vladislav.file_storage.exceptions.folders.FolderCreationException;
 import me.vladislav.file_storage.exceptions.users.UserAlreadyExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 @ControllerAdvice
 public class GlobalExceptionHandlerController {
 
     @ExceptionHandler(UserAlreadyExistException.class)
-    public ModelAndView userAlreadyExistException(UserAlreadyExistException exception) {
-        ModelAndView mav = new ModelAndView("auth/registration");
-        mav.setStatus(HttpStatus.CONFLICT);
-        mav.addObject("user", new UserDTO());
-        mav.addObject("errorMessage", exception.getMessage());
-        return mav;
+    public RedirectView userAlreadyExistException(UserAlreadyExistException exception, RedirectAttributes redirectAttributes, HttpServletResponse response) {
+        redirectAttributes.addFlashAttribute("errorMessage", exception.getMessage());
+        response.setStatus(HttpStatus.BAD_REQUEST.value());
+        return new RedirectView("/registration", true);
+    }
+
+    @ExceptionHandler(FolderCreationException.class)
+    public RedirectView handleInvalidFileRequests(FolderCreationException exception, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("errorMessage", exception.getMessage());
+        return new RedirectView("/", true);
     }
 
 }
