@@ -16,19 +16,15 @@
                     <label for="login" class="form-label">Login</label>
                     <input th:field="*{login}" type="text" class="form-control" id="login" name="login"
                            placeholder="Enter your login (must be between 3 and 50 characters long.)" required>
-                    <div>
-                        <p th:if="${#fields.hasErrors('login')}" th:errors="*{login}" class="alert alert-danger p-2"
-                           role="alert"></p>
-                    </div>
+                    <span th:if="${#fields.hasErrors('login')}" th:errors="*{login}"
+                          class="alert alert-danger p-2 d-block" role="alert"></span>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
                     <input th:field="*{password}" type="password" class="form-control" id="password" name="password"
                            placeholder="Enter your password (must be between 8 and 64 characters long." required>
-                    <div>
-                        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
-                           class="alert alert-danger p-2" role="alert"></p>
-                    </div>
+                    <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+                           class="alert alert-danger p-2 d-block" role="alert"></span>
                 </div>
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Submit</button>
