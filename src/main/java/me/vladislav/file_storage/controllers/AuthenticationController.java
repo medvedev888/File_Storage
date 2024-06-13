@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
@@ -37,7 +38,9 @@ public class AuthenticationController {
             @ModelAttribute("user") @Valid UserDTO userDTO,
             BindingResult bindingResult,
             HttpServletRequest request,
-            Model model) {
+            Model model,
+            RedirectAttributes redirectAttributes
+    ) {
 
         if (bindingResult.hasErrors()) {
             return "auth/registration";
@@ -45,11 +48,12 @@ public class AuthenticationController {
             userService.registerNewUserAccount(userDTO);
             try {
                 request.login(userDTO.getLogin(), userDTO.getPassword());
-                folderService.createFolder("/","user-" + userService.getUserByLogin(userDTO.getLogin()).getId() + "-files");
+                folderService.createFolder("/", "user-" + userService.getUserByLogin(userDTO.getLogin()).getId() + "-files");
             } catch (ServletException e) {
                 model.addAttribute("loginError", "Login failed. Please check your credentials.");
                 return "auth/authorization";
             }
+            redirectAttributes.addFlashAttribute("successMessage", "You have successfully registered and logged in.");
             return "redirect:/";
         }
     }

@@ -1,7 +1,7 @@
 package me.vladislav.file_storage.controllers;
 
 import lombok.RequiredArgsConstructor;
-import me.vladislav.file_storage.dto.FolderCreateDTO;
+import me.vladislav.file_storage.dto.folder.FolderCreateDTO;
 import me.vladislav.file_storage.dto.MinioObjectDTO;
 import me.vladislav.file_storage.services.FolderService;
 import me.vladislav.file_storage.services.UserService;

@@ -66,7 +66,10 @@
 </div>
 
 <!-- modals -->
-<div th:replace="~{modals/create-folder-modal.html}"></div>
+<div th:replace="~{modals/create-folder-modal :: create-folder-modal(currentPath=${currentPath})}"></div>
+
+<!-- success display -->
+<div th:replace="~{fragments/alerts/success-alert-fragment :: success-alert-fragment(successMessage=${successMessage})}"></div>
 
 <!-- errors display -->
 <div th:replace="~{fragments/alerts/error-alert-fragment :: error-alert-fragment(errorMessage=${errorMessage})}"></div>
