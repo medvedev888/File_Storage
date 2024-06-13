@@ -1,4 +1,4 @@
-package me.vladislav.file_storage.dto;
+package me.vladislav.file_storage.dto.folder;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -16,7 +16,7 @@ public class FolderCreateDTO {
 
     @NotBlank(message = "Folder name cannot be empty.")
     @Size(min = 1, max = 50, message="Not valid size of folder name.")
-    @Pattern(regexp = "^[a-zA-Z0-9._/-]*$", message = "Name of folder must contain only alphanumeric characters and \'.\', \'-\', \'_\'.")
+    @Pattern(regexp = "^[a-zA-Z0-9._/ -]*$", message = "Name of folder must contain only alphanumeric characters and \'.\', \'-\', \'_\', \' \'.")
     private String nameOfNewFolder;
 
 }
