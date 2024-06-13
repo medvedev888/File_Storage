@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Create Folder Modal</title>
 </header>
-<div class="modal" tabindex="-1" id="create-folder-modal">
+<div th:fragment="create-folder-modal" class="modal" tabindex="-1" id="create-folder-modal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -12,8 +12,8 @@
             </div>
             <div class="modal-body" th:object="${folderCreateDTO}" >
                 <form action="/folder" method="post" id="create-folder-form">
-                    <input th:field="*{rootFolderPath}" name="rootFolderPath" type="hidden" th:value="${path}" />
-                    <input th:field="*{nameOfNewFolder}" name="nameOfNewFolder" type="text" class="form-control" placeholder="Folder name"/>
+                    <input th:name="rootFolderPath" type="hidden" th:value="${currentPath}" />
+                    <input th:name="nameOfNewFolder" type="text" class="form-control" placeholder="Folder name"/>
                 </form>
             </div>
             <div class="modal-footer">

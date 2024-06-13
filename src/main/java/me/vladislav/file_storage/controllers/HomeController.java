@@ -32,6 +32,7 @@ public class HomeController {
             @RequestParam(value = "path", required = false, defaultValue = "/") String path,
             Model model
     ) {
+        model.addAttribute("currentPath", path.charAt(0) != '/' ? "/" + path : path);
 
         me.vladislav.file_storage.models.User currentUser = userService.getUserByLogin(user.getUsername());
         path = PathUtils.getRootPath(path, currentUser.getId());
