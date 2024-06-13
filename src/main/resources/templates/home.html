@@ -69,7 +69,7 @@
 <div th:replace="~{modals/create-folder-modal.html}"></div>
 
 <!-- errors display -->
-<div th:replace="~{fragments/error-alert-fragment :: errorAlert(errorMessage=${errorMessage})}"></div>
+<div th:replace="~{fragments/alerts/error-alert-fragment :: error-alert-fragment(errorMessage=${errorMessage})}"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
