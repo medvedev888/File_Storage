@@ -1,5 +1,10 @@
 spring:
 
+  mvc:
+    hidden method:
+      filter:
+        enabled: true
+
   datasource:
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}

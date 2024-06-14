@@ -1,5 +1,10 @@
 spring:
 
+  mvc:
+    hidden method:
+      filter:
+        enabled: true
+
   datasource:
     url: jdbc:postgresql://127.0.0.1:5434/file_storage
     username: vladislavmedvedev
