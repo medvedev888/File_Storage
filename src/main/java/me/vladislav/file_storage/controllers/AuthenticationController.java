@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import me.vladislav.file_storage.dto.UserDTO;
+import me.vladislav.file_storage.dto.folder.FolderCreateDTO;
 import me.vladislav.file_storage.services.FolderService;
 import me.vladislav.file_storage.services.UserService;
 import org.springframework.stereotype.Controller;
@@ -48,7 +49,8 @@ public class AuthenticationController {
             userService.registerNewUserAccount(userDTO);
             try {
                 request.login(userDTO.getLogin(), userDTO.getPassword());
-                folderService.createFolder("/", "user-" + userService.getUserByLogin(userDTO.getLogin()).getId() + "-files", true);
+
+                folderService.createFolder(new FolderCreateDTO("/", "user-" + userService.getUserByLogin(userDTO.getLogin()).getId() + "-files"), true);
             } catch (ServletException e) {
                 model.addAttribute("loginError", "Login failed. Please check your credentials.");
                 return "auth/authorization";

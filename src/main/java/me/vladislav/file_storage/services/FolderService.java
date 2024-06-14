@@ -4,6 +4,7 @@ import io.minio.*;
 import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
 import me.vladislav.file_storage.dto.MinioObjectDTO;
+import me.vladislav.file_storage.dto.folder.FolderCreateDTO;
 import me.vladislav.file_storage.exceptions.folders.FolderCreationException;
 import me.vladislav.file_storage.exceptions.folders.RetrievingFoldersException;
 import me.vladislav.file_storage.utils.FolderUtils;
@@ -24,7 +25,10 @@ public class FolderService {
     @Value("${spring.minio.client.bucket-name}")
     private String bucketName;
 
-    public void createFolder(String rootFolderPath, String folderName, boolean isCovertOperation) {
+    public void createFolder(FolderCreateDTO folderCreateDTO, boolean isCovertOperation) {
+        String folderName = folderCreateDTO.getNameOfNewFolder();
+        String rootFolderPath = folderCreateDTO.getRootFolderPath();
+
         folderName += '/';
         if (isFolderWithThisNameExists(rootFolderPath, folderName) && !isCovertOperation) {
             throw new FolderCreationException("Error when creating folder. Folder with this name exists.");
