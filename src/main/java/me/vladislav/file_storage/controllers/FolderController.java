@@ -40,7 +40,7 @@ public class FolderController {
         } else {
             me.vladislav.file_storage.models.User currentUser = userService.getUserByLogin(user.getUsername());
 
-            folderService.createFolder(PathUtils.getRootPath(folderCreateDTO.getRootFolderPath(), currentUser.getId()), folderCreateDTO.getNameOfNewFolder());
+            folderService.createFolder(PathUtils.getRootPath(folderCreateDTO.getRootFolderPath(), currentUser.getId()), folderCreateDTO.getNameOfNewFolder(), false);
         }
         redirectAttributes.addFlashAttribute("successMessage", "Folder created successfully");
         return new RedirectView("/?path=" + PathUtils.getPathWithoutRootUserFolder(folderCreateDTO.getRootFolderPath()));

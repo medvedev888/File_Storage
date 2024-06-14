@@ -1,9 +1,6 @@
 package me.vladislav.file_storage.services;
 
-import io.minio.ListObjectsArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
-import io.minio.Result;
+import io.minio.*;
 import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
 import me.vladislav.file_storage.dto.MinioObjectDTO;
@@ -27,15 +24,32 @@ public class FolderService {
     @Value("${spring.minio.client.bucket-name}")
     private String bucketName;
 
-    public void createFolder(String rootFolderPath, String folderName) {
+    public void createFolder(String rootFolderPath, String folderName, boolean isCovertOperation) {
+        folderName += '/';
+        if (isFolderWithThisNameExists(rootFolderPath, folderName) && !isCovertOperation) {
+            throw new FolderCreationException("Error when creating folder. Folder with this name exists.");
+        }
         try {
             minioClient.putObject(PutObjectArgs.builder()
                     .bucket(bucketName)
-                    .object(rootFolderPath + folderName + '/')
+                    .object(rootFolderPath + folderName)
                     .stream(new ByteArrayInputStream(new byte[]{}), 0, -1)
                     .build());
         } catch (Exception e) {
             throw new FolderCreationException("Error when creating folder.", e);
+        }
+    }
+
+    public boolean isFolderWithThisNameExists(String path, String folderName) {
+        try {
+            minioClient.getObject(
+                    GetObjectArgs.builder()
+                            .bucket(bucketName)
+                            .object(path + folderName)
+                            .build());
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 

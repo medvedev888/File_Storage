@@ -48,7 +48,7 @@ public class AuthenticationController {
             userService.registerNewUserAccount(userDTO);
             try {
                 request.login(userDTO.getLogin(), userDTO.getPassword());
-                folderService.createFolder("/", "user-" + userService.getUserByLogin(userDTO.getLogin()).getId() + "-files");
+                folderService.createFolder("/", "user-" + userService.getUserByLogin(userDTO.getLogin()).getId() + "-files", true);
             } catch (ServletException e) {
                 model.addAttribute("loginError", "Login failed. Please check your credentials.");
                 return "auth/authorization";
