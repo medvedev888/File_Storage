@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MinioObjectDTO {
-    private String path;
+    private String rootPath;
     private String name;
     private String owner;
     private Boolean isFolder;

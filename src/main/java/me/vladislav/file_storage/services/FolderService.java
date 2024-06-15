@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -29,7 +30,9 @@ public class FolderService {
         String folderName = folderCreateDTO.getNameOfNewFolder();
         String rootFolderPath = folderCreateDTO.getRootFolderPath();
 
-        folderName += '/';
+        if (folderName.charAt(folderName.length() - 1) != '/') {
+            folderName += '/';
+        }
         if (isFolderWithThisNameExists(rootFolderPath, folderName) && !isCovertOperation) {
             throw new FolderCreationException("Error when creating folder. Folder with this name exists.");
         }
@@ -68,12 +71,14 @@ public class FolderService {
                     .build()
             );
 
+            int k = 1;
             for (Result<Item> result : results) {
                 Item item = result.get();
                 String name = FolderUtils.getNameOfCurrentFolderByPath(item.objectName());
 
-                if (!name.equals(FolderUtils.getNameOfCurrentFolderByPath(path))) {
-
+                if (name.equals(FolderUtils.getNameOfCurrentFolderByPath(path)) && k == 1) {
+                    k--;
+                } else {
                     String owner = FolderUtils.getOwnerFolder(path, name);
 
                     listOfFolders.add(new MinioObjectDTO(PathUtils.getPathWithoutRootUserFolder(path), name, owner, item.objectName().endsWith("/")));
