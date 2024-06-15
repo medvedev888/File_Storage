@@ -2,10 +2,24 @@ package me.vladislav.file_storage.utils;
 
 public class PathUtils {
 
-    public static String getPathWithoutCurrentFolder(String path, String currentFolderName) {
+    public static String getPathWithoutCurrentFolder(String path, String currentFolderName, boolean isNameRepeat, int numberOfDesiredFolder) {
         path = getValidPath(path);
-        if(path.isEmpty() || !path.contains(currentFolderName)) {
+        if (path.isEmpty() || !path.contains(currentFolderName)) {
             return path;
+        }
+
+        if(isNameRepeat) {
+            String[] parts = path.split("/");
+            StringBuffer result = new StringBuffer();
+            for (String part : parts) {
+                if (numberOfDesiredFolder == 0) {
+                    return result.substring(0, result.toString().lastIndexOf(currentFolderName));
+                }
+                if ((part + '/').equals(currentFolderName)) {
+                    numberOfDesiredFolder--;
+                }
+                result.append(part).append('/');
+            }
         }
         return path.substring(0, path.indexOf(currentFolderName));
     }
