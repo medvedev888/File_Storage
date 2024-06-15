@@ -37,7 +37,7 @@ public class HomeController {
         me.vladislav.file_storage.models.User currentUser = userService.getUserByLogin(user.getUsername());
         path = PathUtils.getRootPath(path, currentUser.getId());
 
-        List<Pair<String, String>> breadcrumbsList = BreadcrumbUtils.getListOfLinksFromPath(path);
+        List<Pair<String, String>> breadcrumbsList = BreadcrumbUtils.getListOfBreadcrumbsFromPath(path);
         model.addAttribute("breadcrumbsList", breadcrumbsList);
 
         List<MinioObjectDTO> listOfFolders = folderService.getFolders(path, false);

@@ -12,6 +12,10 @@ public class PathUtils {
             String[] parts = path.split("/");
             StringBuffer result = new StringBuffer();
             for (String part : parts) {
+                if ((part).equals(currentFolderName)) {
+                    numberOfDesiredFolder--;
+                }
+                result.append(part).append('/');
                 if (numberOfDesiredFolder == 0) {
                     return result.substring(0, result.toString().lastIndexOf(currentFolderName));
                 }
