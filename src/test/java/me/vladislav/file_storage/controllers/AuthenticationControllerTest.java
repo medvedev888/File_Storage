@@ -15,6 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -42,6 +43,9 @@ public class AuthenticationControllerTest {
 
     @MockBean
     private Model model;
+
+    @MockBean
+    private RedirectAttributes redirectAttributes;
 
     @Autowired
     private AuthenticationController authenticationController;
@@ -77,7 +81,7 @@ public class AuthenticationControllerTest {
         when(bindingResult.hasErrors()).thenReturn(false);
         doNothing().when(userService).registerNewUserAccount(any());
 
-        String viewName = authenticationController.register(userDTO, bindingResult, httpServletRequest, model);
+        String viewName = authenticationController.register(userDTO, bindingResult, httpServletRequest, model, redirectAttributes);
 
         assertEquals("auth/authorization", viewName);
         verify(model).addAttribute("loginError", "Login failed. Please check your credentials.");
