@@ -11,7 +11,7 @@
                 <h5 class="modal-title">Create Folder</h5>
             </div>
             <div class="modal-body" th:object="${folderCreateDTO}" >
-                <form action="/folder" method="post" id="create-folder-form">
+                <form th:action="@{/folder}" th:method="post" id="create-folder-form">
                     <input th:name="rootFolderPath" type="hidden" th:value="${currentPath}" />
                     <input th:name="nameOfNewFolder" type="text" class="form-control" placeholder="Folder name"/>
                 </form>
