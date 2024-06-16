@@ -1,10 +1,11 @@
 package me.vladislav.file_storage.utils;
 
+//TODO: разобраться с многопоточностью
 public class PathUtils {
 
     public static String getPathWithoutCurrentFolder(String path, String currentFolderName, boolean isNameRepeat, int numberOfDesiredFolder) {
         path = getValidPath(path);
-        if (path.isEmpty() || !path.contains(currentFolderName)) {
+        if (path.isEmpty()) {
             return path;
         }
 
@@ -19,10 +20,6 @@ public class PathUtils {
                 if (numberOfDesiredFolder == 0) {
                     return result.substring(0, result.toString().lastIndexOf(currentFolderName));
                 }
-                if ((part + '/').equals(currentFolderName)) {
-                    numberOfDesiredFolder--;
-                }
-                result.append(part).append('/');
             }
         }
         return path.substring(0, path.indexOf(currentFolderName));
@@ -34,8 +31,8 @@ public class PathUtils {
 
     public static String getPathWithoutRootUserFolder(String path) {
         path = getValidPath(path);
-        for(int i = 0; i < path.length(); i++) {
-            if(path.charAt(i) == '/') {
+        for (int i = 0; i < path.length(); i++) {
+            if (path.charAt(i) == '/') {
                 return path.substring(i + 1);
             }
         }
