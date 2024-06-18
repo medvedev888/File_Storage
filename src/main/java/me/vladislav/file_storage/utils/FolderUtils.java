@@ -5,6 +5,10 @@ import java.util.List;
 
 public class FolderUtils {
 
+    public static String getFolderNameToDisplay(String folderName) {
+        return folderName.substring(0, folderName.length() - 1);
+    }
+
     public static String getNameOfCurrentFolderByPath(String path) {
         StringBuffer stringBuffer = new StringBuffer(path);
 
@@ -24,7 +28,7 @@ public class FolderUtils {
     public static String getOwnerFolder(String path, String targetName, boolean isNameRepeat, int numberOfDesiredFolder) {
         path = PathUtils.getValidPath(path);
         if (path.isEmpty()) {
-            throw new IllegalArgumentException("The path cannot be null or empty.");
+            return "";
         }
 
         targetName = targetName.endsWith("/") ? targetName.substring(0, targetName.length() - 1) : targetName;
