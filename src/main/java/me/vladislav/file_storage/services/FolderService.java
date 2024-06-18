@@ -1,11 +1,16 @@
 package me.vladislav.file_storage.services;
 
 import io.minio.*;
+import io.minio.messages.DeleteError;
+import io.minio.messages.DeleteObject;
 import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
 import me.vladislav.file_storage.dto.MinioObjectDTO;
 import me.vladislav.file_storage.dto.folder.FolderCreateDTO;
+import me.vladislav.file_storage.dto.folder.FolderDeleteDTO;
+import me.vladislav.file_storage.dto.folder.FoldersDTO;
 import me.vladislav.file_storage.exceptions.folders.FolderCreationException;
+import me.vladislav.file_storage.exceptions.folders.FolderDeletionException;
 import me.vladislav.file_storage.exceptions.folders.RetrievingFoldersException;
 import me.vladislav.file_storage.utils.FolderUtils;
 import me.vladislav.file_storage.utils.PathUtils;
@@ -13,9 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -60,9 +63,11 @@ public class FolderService {
         }
     }
 
-    public List<MinioObjectDTO> getFolders(String path, boolean recursive) {
+    public FoldersDTO getFolders(String path, boolean recursive) {
         try {
+            FoldersDTO foldersDTO = new FoldersDTO();
             List<MinioObjectDTO> listOfFolders = new ArrayList<>();
+            Map<String, Integer> mapOfDuplicates = new HashMap<>();
 
             Iterable<Result<Item>> results = minioClient.listObjects(ListObjectsArgs.builder()
                     .bucket(bucketName)
@@ -75,16 +80,24 @@ public class FolderService {
             for (Result<Item> result : results) {
                 Item item = result.get();
                 String name = FolderUtils.getNameOfCurrentFolderByPath(item.objectName());
+                String currentPath = item.objectName();
 
-                if (name.equals(FolderUtils.getNameOfCurrentFolderByPath(path)) && k == 1) {
+                mapOfDuplicates.put(name, mapOfDuplicates.getOrDefault(name, 0) + 1);
+
+                if (name.equals(FolderUtils.getNameOfCurrentFolderByPath(currentPath)) && k == 1) {
                     k--;
                 } else {
-                    String owner = FolderUtils.getOwnerFolder(path, name);
+                    String owner = FolderUtils.getOwnerFolder(currentPath, name, true, mapOfDuplicates.get(name));
+                    String currentPathWithoutCurrentFolder = PathUtils.getPathWithoutCurrentFolder(currentPath, name, true, mapOfDuplicates.get(name));
 
-                    listOfFolders.add(new MinioObjectDTO(PathUtils.getPathWithoutRootUserFolder(path), name, owner, item.objectName().endsWith("/")));
+                    listOfFolders.add(new MinioObjectDTO(PathUtils.getPathWithoutRootUserFolder(currentPathWithoutCurrentFolder), FolderUtils.getFolderNameToDisplay(name), owner, item.objectName().endsWith("/")));
                 }
             }
-            return listOfFolders;
+
+            foldersDTO.setListOfFolders(listOfFolders);
+            foldersDTO.setMapOfDuplicates(mapOfDuplicates);
+
+            return foldersDTO;
         } catch (Exception e) {
             throw new RetrievingFoldersException("Error when retrieving folders.", e);
         }
