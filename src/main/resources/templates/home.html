@@ -61,7 +61,13 @@
             </button>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="#">Rename</a></li>
-                <li><a class="dropdown-item" href="#">Delete</a></li>
+                <li th:object="${folderDeleteDTO}">
+                    <form th:action="@{/folder}" th:method="delete">
+                        <input th:name="rootFolderPath" type="hidden" th:value="${currentPath}">
+                        <input th:name="folderName" type="hidden" th:value="${folder.getName()}">
+                        <button type="submit" class="dropdown-item">Delete</button>
+                    </form>
+                </li>
             </ul>
         </li>
     </ul>
