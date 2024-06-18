@@ -50,6 +50,47 @@ public class FolderService {
         }
     }
 
+
+    public void deleteFolder(FolderDeleteDTO folderDeleteDTO, Long userID) {
+        String folderName = folderDeleteDTO.getFolderName();
+        String rootFolderPath = folderDeleteDTO.getRootFolderPath();
+
+        // заменить тернарным оператором
+        if (folderName.charAt(folderName.length() - 1) != '/') {
+            folderName += '/';
+        }
+        if (!isFolderWithThisNameExists(rootFolderPath, folderName)) {
+            throw new FolderDeletionException("Error when deleting folder. Folder with name " + rootFolderPath + folderName + " not exists.");
+        }
+
+        List<MinioObjectDTO> folderList = getFolders(rootFolderPath + folderName, true).getListOfFolders();
+        List<DeleteObject> objectsForDeleting = new LinkedList<>();
+
+        String name;
+        for (MinioObjectDTO object : folderList) {
+            name = object.getName();
+            if (!name.endsWith("/")) {
+                name += "/";
+            }
+            objectsForDeleting.add(new DeleteObject(PathUtils.getRootPath(object.getRootPath() + name, userID)));
+        }
+        objectsForDeleting.add(new DeleteObject(rootFolderPath + folderName));
+
+        Iterable<Result<DeleteError>> results = minioClient.removeObjects(RemoveObjectsArgs.builder()
+                .bucket(bucketName)
+                .objects(objectsForDeleting)
+                .build());
+
+        try {
+            for (Result<DeleteError> result : results) {
+                result.get();
+            }
+        } catch (Exception e) {
+            throw new FolderDeletionException("Error when deleting folder.", e);
+        }
+    }
+
+
     public boolean isFolderWithThisNameExists(String path, String folderName) {
         try {
             minioClient.getObject(
