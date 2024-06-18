@@ -2,6 +2,7 @@ package me.vladislav.file_storage.controllers.advice;
 
 import jakarta.servlet.http.HttpServletResponse;
 import me.vladislav.file_storage.exceptions.folders.FolderCreationException;
+import me.vladislav.file_storage.exceptions.folders.FolderDeletionException;
 import me.vladislav.file_storage.exceptions.users.UserAlreadyExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -21,6 +22,13 @@ public class GlobalExceptionHandlerController {
 
     @ExceptionHandler(FolderCreationException.class)
     public RedirectView handleInvalidFileRequests(FolderCreationException exception, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("errorMessage", exception.getMessage());
+        return new RedirectView("/", true);
+    }
+
+    //TODO: need to change this block in the future (duplicated code)
+    @ExceptionHandler(FolderDeletionException.class)
+    public RedirectView handleInvalidFileRequests(FolderDeletionException exception, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("errorMessage", exception.getMessage());
         return new RedirectView("/", true);
     }
