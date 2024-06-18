@@ -6,8 +6,10 @@ public class PathUtils {
     public static String getPathWithoutCurrentFolder(String path, String currentFolderName, boolean isNameRepeat, int numberOfDesiredFolder) {
         path = getValidPath(path);
         if (path.isEmpty()) {
-            return path;
+            return "";
         }
+
+        currentFolderName = currentFolderName.endsWith("/") ? currentFolderName.substring(0, currentFolderName.length() - 1) : currentFolderName;
 
         if(isNameRepeat) {
             String[] parts = path.split("/");
@@ -21,8 +23,10 @@ public class PathUtils {
                     return result.substring(0, result.toString().lastIndexOf(currentFolderName));
                 }
             }
+        } else {
+            return path.substring(0, path.indexOf(currentFolderName));
         }
-        return path.substring(0, path.indexOf(currentFolderName));
+        throw new IllegalArgumentException("Invalid input.");
     }
 
     public static String getRootPath(String path, Long userID) {
