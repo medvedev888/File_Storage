@@ -40,10 +40,12 @@ public class HomeController {
         List<Pair<String, String>> breadcrumbsList = BreadcrumbUtils.getListOfBreadcrumbsFromPath(path);
         model.addAttribute("breadcrumbsList", breadcrumbsList);
 
-        List<MinioObjectDTO> listOfFolders = folderService.getFolders(path, false);
+        List<MinioObjectDTO> listOfFolders = folderService.getFolders(path, false).getListOfFolders();
         model.addAttribute("listOfFolders", listOfFolders);
 
         model.addAttribute("folderCreateDTO", new FolderCreateDTO());
+
+        model.addAttribute("folderDeleteDTO", new FolderDeleteDTO());
         return "home";
     }
 }
