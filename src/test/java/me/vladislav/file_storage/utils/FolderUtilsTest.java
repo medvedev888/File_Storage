@@ -8,12 +8,19 @@ public class FolderUtilsTest {
 
     @Test
     void shouldReturnValidOwnerFolderByTargetName() {
-        String path = "user-1-files/folder/folder/";
-        String name = "folder/";
+        String path1 = "user-1-files/folder/folder/";
+        String name1 = "folder/";
+        String path2 = "user-1-files/folder/haha/";
+        String name2 = "folder";
+        String name3 = "haha/";
 
-        String result = FolderUtils.getOwnerFolder(path, name);
+        String result1 = FolderUtils.getOwnerFolder(path1, name1, true, 1);
+        String result2 = FolderUtils.getOwnerFolder(path2, name2, false, 123);
+        String result3 = FolderUtils.getOwnerFolder(path2, name3, false, 123);
 
-        assertEquals("folder/", result);
+        assertEquals("user-1-files/", result1);
+        assertEquals("user-1-files/", result2);
+        assertEquals("folder/", result3);
     }
 
     @Test
