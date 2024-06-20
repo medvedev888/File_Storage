@@ -44,7 +44,7 @@ public class FolderUtils {
             }
             counterOfParts++;
         }
-        throw new IllegalArgumentException("Invalid input.");
+        return "";
     }
 
 }
