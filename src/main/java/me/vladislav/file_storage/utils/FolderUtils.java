@@ -6,7 +6,10 @@ import java.util.List;
 public class FolderUtils {
 
     public static String getFolderNameToDisplay(String folderName) {
-        return folderName.substring(0, folderName.length() - 1);
+        if (folderName.charAt(folderName.length() - 1) == '/') {
+            return folderName.substring(0, folderName.length() - 1);
+        }
+        return folderName;
     }
 
     public static String getNameOfCurrentFolderByPath(String path) {
@@ -25,7 +28,7 @@ public class FolderUtils {
         return result.endsWith("/") ? result : result + "/";
     }
 
-    public static String getOwnerFolder(String path, String targetName, boolean isNameRepeat, int numberOfDesiredFolder) {
+    public static String getOwnerFolder(String path, String targetName, boolean isNameRepeat, Long numberOfDesiredFolder) {
         path = PathUtils.getValidPath(path);
         if (path.isEmpty()) {
             return "";
@@ -44,7 +47,9 @@ public class FolderUtils {
             }
             counterOfParts++;
         }
-        return "";
+        return parts.get(counterOfParts - 1) + "/";
+    }
+
     }
 
 }
