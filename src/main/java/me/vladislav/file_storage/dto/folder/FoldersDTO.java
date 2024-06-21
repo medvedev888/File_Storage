@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import me.vladislav.file_storage.dto.MinioObjectDTO;
 
 import java.util.List;
-import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -14,6 +13,5 @@ import java.util.Map;
 public class FoldersDTO {
 
     private List<MinioObjectDTO> listOfFolders;
-    private Map<String, Integer> mapOfDuplicates;
 
 }
