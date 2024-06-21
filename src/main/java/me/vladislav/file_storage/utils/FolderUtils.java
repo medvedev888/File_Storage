@@ -50,6 +50,12 @@ public class FolderUtils {
         return parts.get(counterOfParts - 1) + "/";
     }
 
+    public static Long getTheNumberOfTheDuplicateFolderNameByPath(String path) {
+        path = PathUtils.getValidPath(path);
+
+        String[] parts = path.split("/");
+
+        return Arrays.stream(parts).filter((x) -> x.equals(parts[parts.length - 1])).count();
     }
 
 }
