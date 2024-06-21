@@ -117,18 +117,34 @@ public class FolderService {
                     .build()
             );
 
-            int k = 1;
+            List<Item> listOfItems = new ArrayList<>();
+
             for (Result<Item> result : results) {
-                Item item = result.get();
+                listOfItems.add(result.get());
+            }
+
+            listOfItems.sort(Comparator.comparing(Item::objectName));
+            if (!listOfItems.isEmpty()) {
+                List<String> parts = Arrays.stream(listOfItems.get(0).objectName().split("/")).toList();
+
+                for (String part : parts) {
+                    mapOfDuplicates.put(part + "/", mapOfDuplicates.getOrDefault(part + "/", 0) + 1);
+                }
+            }
+
+            int k = 1;
+            for (Item item : listOfItems) {
+
                 String name = FolderUtils.getNameOfCurrentFolderByPath(item.objectName());
                 String currentPath = item.objectName();
 
-                mapOfDuplicates.put(name, mapOfDuplicates.getOrDefault(name, 0) + 1);
 
                 if (name.equals(FolderUtils.getNameOfCurrentFolderByPath(currentPath)) && k == 1) {
                     k--;
                 } else {
+                    mapOfDuplicates.put(name, mapOfDuplicates.getOrDefault(name, 0) + 1);
                     String owner = FolderUtils.getOwnerFolder(currentPath, name, true, mapOfDuplicates.get(name));
+                    // ошибка тут
                     String currentPathWithoutCurrentFolder = PathUtils.getPathWithoutCurrentFolder(currentPath, name, true, mapOfDuplicates.get(name));
 
                     listOfFolders.add(new MinioObjectDTO(PathUtils.getPathWithoutRootUserFolder(currentPathWithoutCurrentFolder), FolderUtils.getFolderNameToDisplay(name), owner, item.objectName().endsWith("/")));
