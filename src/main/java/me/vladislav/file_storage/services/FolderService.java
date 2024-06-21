@@ -18,7 +18,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -50,15 +52,12 @@ public class FolderService {
         }
     }
 
-
     public void deleteFolder(FolderDeleteDTO folderDeleteDTO, Long userID) {
         String folderName = folderDeleteDTO.getFolderName();
         String rootFolderPath = folderDeleteDTO.getRootFolderPath();
 
-        // заменить тернарным оператором
-        if (folderName.charAt(folderName.length() - 1) != '/') {
-            folderName += '/';
-        }
+        folderName = folderName.charAt(folderName.length() - 1) != '/' ? folderName += '/' : folderName;
+
         if (!isFolderWithThisNameExists(rootFolderPath, folderName)) {
             throw new FolderDeletionException("Error when deleting folder. Folder with name " + rootFolderPath + folderName + " not exists.");
         }
@@ -72,14 +71,18 @@ public class FolderService {
             if (!name.endsWith("/")) {
                 name += "/";
             }
-            objectsForDeleting.add(new DeleteObject(PathUtils.getRootPath(object.getRootPath() + name, userID)));
+            objectsForDeleting.add(new DeleteObject(
+                    PathUtils.getRootPath(object.getRootPath() + name,
+                            userID)
+            ));
         }
         objectsForDeleting.add(new DeleteObject(rootFolderPath + folderName));
 
         Iterable<Result<DeleteError>> results = minioClient.removeObjects(RemoveObjectsArgs.builder()
                 .bucket(bucketName)
                 .objects(objectsForDeleting)
-                .build());
+                .build()
+        );
 
         try {
             for (Result<DeleteError> result : results) {
@@ -89,7 +92,6 @@ public class FolderService {
             throw new FolderDeletionException("Error when deleting folder.", e);
         }
     }
-
 
     public boolean isFolderWithThisNameExists(String path, String folderName) {
         try {
