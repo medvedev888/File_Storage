@@ -3,17 +3,14 @@ package me.vladislav.file_storage.utils;
 public class PathUtils {
 
     /**
-     *
-     * @param path path containing {@code currentFolderName}
-     * @param currentFolderName name of current folder
-     * @param isNameRepeat a boolean flag indicating whether a path can have folders with the same name
+     * @param path                  path containing {@code currentFolderName}
+     * @param currentFolderName     name of current folder
+     * @param isNameRepeat          a boolean flag indicating whether a path can have folders with the same name
      * @param numberOfDesiredFolder position of desired folder, should be greater than zero, if {@code isNameRepeat=true}
      * @return valid path (using {@link #getValidPath(String path)}) without {@code currentFolderName}; empty string,
      * if path is empty
-     * @throws IllegalArgumentException
-     *
      */
-    public static String getPathWithoutCurrentFolder(String path, String currentFolderName, boolean isNameRepeat, int numberOfDesiredFolder) {
+    public static String getPathWithoutCurrentFolder(String path, String currentFolderName, boolean isNameRepeat, Long numberOfDesiredFolder) {
         path = getValidPath(path);
         if (path.isEmpty()) {
             return "";
@@ -21,7 +18,7 @@ public class PathUtils {
 
         currentFolderName = currentFolderName.endsWith("/") ? currentFolderName.substring(0, currentFolderName.length() - 1) : currentFolderName;
 
-        if(isNameRepeat) {
+        if (isNameRepeat) {
             String[] parts = path.split("/");
             StringBuffer result = new StringBuffer();
             for (String part : parts) {
@@ -33,15 +30,12 @@ public class PathUtils {
                     return result.substring(0, result.toString().lastIndexOf(currentFolderName));
                 }
             }
-        } else {
-            return path.substring(0, path.indexOf(currentFolderName));
         }
-        throw new IllegalArgumentException("Invalid input.");
+        return path.substring(0, path.indexOf(currentFolderName));
     }
 
     /**
-     *
-     * @param path any path
+     * @param path   any path
      * @param userID id of user
      * @return valid path (using {@link #getValidPath(String path)}) with prefix (user-{@code userID}-files)
      */
@@ -72,7 +66,6 @@ public class PathUtils {
     }
 
     /**
-     *
      * @param path any path
      * @return valid path (without whitespace characters and duplicate characters {@code /})
      */
