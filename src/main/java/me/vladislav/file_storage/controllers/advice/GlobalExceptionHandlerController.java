@@ -26,7 +26,6 @@ public class GlobalExceptionHandlerController {
         return new RedirectView("/", true);
     }
 
-    //TODO: need to change this block in the future (duplicated code)
     @ExceptionHandler(FolderDeletionException.class)
     public RedirectView handleInvalidFileRequests(FolderDeletionException exception, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("errorMessage", exception.getMessage());

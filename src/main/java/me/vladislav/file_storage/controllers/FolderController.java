@@ -57,13 +57,12 @@ public class FolderController {
             @ModelAttribute("folderDeleteDTO") @Valid FolderDeleteDTO folderDeleteDTO,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes
-            ) {
-        if(bindingResult.hasErrors()) {
+    ) {
+        if (bindingResult.hasErrors()) {
             String errorMessage = bindingResult.getFieldError("nameOfNewFolder") != null ?
                     bindingResult.getFieldError("nameOfNewFolder").getDefaultMessage() :
                     "Invalid folder name";
 
-            //TODO: need to handle exception in controller advice
             throw new FolderDeletionException(errorMessage);
         } else {
             me.vladislav.file_storage.models.User currentUser = userService.getUserByLogin(user.getUsername());
