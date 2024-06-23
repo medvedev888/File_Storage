@@ -1,4 +1,4 @@
-package me.vladislav.file_storage.exceptions.folders;
+package me.vladislav.file_storage.exceptions.folder;
 
 public class RetrievingFoldersException extends RuntimeException {
     public RetrievingFoldersException(String message) {
