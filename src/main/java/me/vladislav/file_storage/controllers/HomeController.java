@@ -1,6 +1,7 @@
 package me.vladislav.file_storage.controllers;
 
 import lombok.RequiredArgsConstructor;
+import me.vladislav.file_storage.dto.file.FileUploadDTO;
 import me.vladislav.file_storage.dto.folder.FolderCreateDTO;
 import me.vladislav.file_storage.dto.MinioObjectDTO;
 import me.vladislav.file_storage.dto.folder.FolderDeleteDTO;
@@ -45,8 +46,10 @@ public class HomeController {
         model.addAttribute("listOfFolders", listOfFolders);
 
         model.addAttribute("folderCreateDTO", new FolderCreateDTO());
-
         model.addAttribute("folderDeleteDTO", new FolderDeleteDTO());
+
+        model.addAttribute("fileUploadDTO", new FileUploadDTO());
+
         return "home";
     }
 }
