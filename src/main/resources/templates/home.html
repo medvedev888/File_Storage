@@ -30,7 +30,8 @@
 <!--    control panel-->
 <div class="container d-flex py-3">
     <div class="container d-flex justify-content-start w-auto">
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#create-folder-modal">Create Folder
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#create-folder-modal">
+            Create Folder
         </button>
     </div>
     <form class="container d-flex w-50">
@@ -38,7 +39,9 @@
         <button class="btn btn-primary" type="submit">Search</button>
     </form>
     <div class="container d-flex justify-content-end w-auto">
-        <button class="me-2 btn btn-primary">Upload File</button>
+        <button class="me-2 btn btn-primary" data-bs-toggle="modal" data-bs-target="#upload-file-modal">
+            Upload File
+        </button>
         <button class="btn btn-primary">Upload Folder</button>
     </div>
 </div>
@@ -75,6 +78,7 @@
 
 <!-- modals -->
 <div th:replace="~{modals/create-folder-modal :: create-folder-modal(currentPath=${currentPath})}"></div>
+<div th:replace="~{modals/upload-file-modal :: upload-file-modal(currentPath=${currentPath})}"></div>
 
 <!-- success display -->
 <div th:replace="~{fragments/alerts/success-alert-fragment :: success-alert-fragment(successMessage=${successMessage})}"></div>
