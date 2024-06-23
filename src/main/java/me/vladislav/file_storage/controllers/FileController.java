@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import me.vladislav.file_storage.dto.file.FileUploadDTO;
 import me.vladislav.file_storage.exceptions.file.FileUploadException;
-import me.vladislav.file_storage.services.FileService;
+import me.vladislav.file_storage.services.MinioService;
 import me.vladislav.file_storage.services.UserService;
 import me.vladislav.file_storage.utils.PathUtils;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,7 +22,7 @@ import org.springframework.web.servlet.view.RedirectView;
 @RequiredArgsConstructor
 public class FileController {
 
-    private final FileService fileService;
+    private final MinioService minioService;
     private final UserService userService;
 
     @PostMapping
@@ -44,7 +44,7 @@ public class FileController {
 
             fileUploadDTO.setRootFolderPath(PathUtils.getRootPath(fileUploadDTO.getRootFolderPath(), currentUser.getId()));
 
-            fileService.uploadFile(fileUploadDTO);
+            minioService.uploadFile(fileUploadDTO);
 
             redirectAttributes.addFlashAttribute("successMessage", "File uploaded successfully");
             return new RedirectView("/?path=" + PathUtils.getPathWithoutRootUserFolder(fileUploadDTO.getRootFolderPath()));

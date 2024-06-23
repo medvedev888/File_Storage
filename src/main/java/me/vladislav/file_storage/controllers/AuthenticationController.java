@@ -6,7 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import me.vladislav.file_storage.dto.UserDTO;
 import me.vladislav.file_storage.dto.folder.FolderCreateDTO;
-import me.vladislav.file_storage.services.FolderService;
+import me.vladislav.file_storage.services.MinioService;
 import me.vladislav.file_storage.services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class AuthenticationController {
 
     private final UserService userService;
-    private final FolderService folderService;
+    private final MinioService minioService;
 
     @GetMapping("/authorization")
     public String showAuthorizationPage() {
@@ -50,7 +50,7 @@ public class AuthenticationController {
             try {
                 request.login(userDTO.getLogin(), userDTO.getPassword());
 
-                folderService.createFolder(new FolderCreateDTO("/", "user-" + userService.getUserByLogin(userDTO.getLogin()).getId() + "-files"), true);
+                minioService.createFolder(new FolderCreateDTO("/", "user-" + userService.getUserByLogin(userDTO.getLogin()).getId() + "-files"), true);
             } catch (ServletException e) {
                 model.addAttribute("loginError", "Login failed. Please check your credentials.");
                 return "auth/authorization";

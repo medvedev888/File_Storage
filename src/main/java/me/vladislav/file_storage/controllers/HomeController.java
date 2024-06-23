@@ -1,11 +1,11 @@
 package me.vladislav.file_storage.controllers;
 
 import lombok.RequiredArgsConstructor;
+import me.vladislav.file_storage.dto.MinioObjectDTO;
 import me.vladislav.file_storage.dto.file.FileUploadDTO;
 import me.vladislav.file_storage.dto.folder.FolderCreateDTO;
-import me.vladislav.file_storage.dto.MinioObjectDTO;
 import me.vladislav.file_storage.dto.folder.FolderDeleteDTO;
-import me.vladislav.file_storage.services.FolderService;
+import me.vladislav.file_storage.services.MinioService;
 import me.vladislav.file_storage.services.UserService;
 import me.vladislav.file_storage.utils.BreadcrumbUtils;
 import me.vladislav.file_storage.utils.PathUtils;
@@ -25,7 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class HomeController {
 
-    private final FolderService folderService;
+    private final MinioService minioService;
     private final UserService userService;
 
     @GetMapping
@@ -42,7 +42,7 @@ public class HomeController {
         List<Pair<String, String>> breadcrumbsList = BreadcrumbUtils.getListOfBreadcrumbsFromPath(path);
         model.addAttribute("breadcrumbsList", breadcrumbsList);
 
-        List<MinioObjectDTO> listOfFolders = folderService.getFolders(path, false).getListOfFolders();
+        List<MinioObjectDTO> listOfFolders = minioService.getFolders(path, false).getListOfFolders();
         model.addAttribute("listOfFolders", listOfFolders);
 
         model.addAttribute("folderCreateDTO", new FolderCreateDTO());
