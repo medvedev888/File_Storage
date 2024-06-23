@@ -48,9 +48,9 @@
 
 <!--    TODO: need to add file display-->
 <div class="container my-4">
-    <ul class="list-group list-group-flush" th:each="folder : ${listOfFolders}">
+    <ul class="list-group list-group-flush" th:each="minioObject : ${listOfMinioObject}">
         <li class="list-group-item d-flex align-items-center my-1 border bg-body rounded">
-            <img th:if="${folder.getIsFolder()}" th:src="@{/img/folder_image.png}"
+            <img th:if="${minioObject.getIsFolder()}" th:src="@{/img/folder_image.png}"
                  style="width: 1.5rem;" class="d-inline-flex justify-content-start me-4" alt="Folder">
             <a th:href="@{'/?path=' + ${folder.getRootPath()} + ${folder.getName()} + '/'}"
                class="d-inline-flex flex-grow-1 text-decoration-none" th:text="${folder.getName()}"></a>
@@ -67,7 +67,7 @@
                 <li th:object="${folderDeleteDTO}">
                     <form th:action="@{/folder}" th:method="delete">
                         <input th:name="rootFolderPath" type="hidden" th:value="${currentPath}">
-                        <input th:name="folderName" type="hidden" th:value="${folder.getName()}">
+                        <input th:name="folderName" type="hidden" th:value="${minioObject.getName()}">
                         <button type="submit" class="dropdown-item">Delete</button>
                     </form>
                 </li>

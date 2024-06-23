@@ -12,6 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 public class FoldersDTO {
 
-    private List<MinioObjectDTO> listOfFolders;
+    private List<MinioObjectDTO> listOfMinioObject;
 
 }
