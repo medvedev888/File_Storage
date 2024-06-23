@@ -1,9 +1,9 @@
 package me.vladislav.file_storage.services;
 
 import lombok.RequiredArgsConstructor;
-import me.vladislav.file_storage.exceptions.users.UserAlreadyExistException;
+import me.vladislav.file_storage.exceptions.user.UserAlreadyExistException;
 import me.vladislav.file_storage.dto.UserDTO;
-import me.vladislav.file_storage.exceptions.users.UserNotFoundException;
+import me.vladislav.file_storage.exceptions.user.UserNotFoundException;
 import me.vladislav.file_storage.models.User;
 import me.vladislav.file_storage.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
