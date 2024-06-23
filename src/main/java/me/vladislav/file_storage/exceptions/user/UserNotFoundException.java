@@ -1,4 +1,4 @@
-package me.vladislav.file_storage.exceptions.users;
+package me.vladislav.file_storage.exceptions.user;
 
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException(String message) {

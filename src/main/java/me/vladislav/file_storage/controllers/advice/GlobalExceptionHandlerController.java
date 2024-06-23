@@ -1,9 +1,9 @@
 package me.vladislav.file_storage.controllers.advice;
 
 import jakarta.servlet.http.HttpServletResponse;
-import me.vladislav.file_storage.exceptions.folders.FolderCreationException;
-import me.vladislav.file_storage.exceptions.folders.FolderDeletionException;
-import me.vladislav.file_storage.exceptions.users.UserAlreadyExistException;
+import me.vladislav.file_storage.exceptions.folder.FolderCreationException;
+import me.vladislav.file_storage.exceptions.folder.FolderDeletionException;
+import me.vladislav.file_storage.exceptions.user.UserAlreadyExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
