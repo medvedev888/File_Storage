@@ -10,8 +10,9 @@
             <div class="modal-header">
                 <h5 class="modal-title">Upload file</h5>
             </div>
-            <div class="modal-body" th:object="${fileUploadDTO}" >
-                <form action="#" th:method="post" id="upload-file-form">
+            <div class="modal-body">
+                <form enctype="multipart/form-data" th:action="@{/file}" th:method="post"
+                      id="upload-file-form" th:object="${fileUploadDTO}" >
                     <p th:value="${currentPath}"></p>
                     <input th:name="rootFolderPath" type="hidden" th:value="${currentPath}" />
                     <input th:name="file" type="file" class="form-control"/>
