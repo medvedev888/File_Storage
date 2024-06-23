@@ -1,6 +1,7 @@
 package me.vladislav.file_storage.controllers.advice;
 
 import jakarta.servlet.http.HttpServletResponse;
+import me.vladislav.file_storage.exceptions.file.FileUploadException;
 import me.vladislav.file_storage.exceptions.folder.FolderCreationException;
 import me.vladislav.file_storage.exceptions.folder.FolderDeletionException;
 import me.vladislav.file_storage.exceptions.user.UserAlreadyExistException;
@@ -28,6 +29,12 @@ public class GlobalExceptionHandlerController {
 
     @ExceptionHandler(FolderDeletionException.class)
     public RedirectView handleInvalidFileRequests(FolderDeletionException exception, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("errorMessage", exception.getMessage());
+        return new RedirectView("/", true);
+    }
+
+    @ExceptionHandler(FileUploadException.class)
+    public RedirectView handleInvalidFileRequests(FileUploadException exception, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("errorMessage", exception.getMessage());
         return new RedirectView("/", true);
     }
