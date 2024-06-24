@@ -3,11 +3,14 @@ package me.vladislav.file_storage.utils;
 import java.util.Arrays;
 import java.util.List;
 
+//TODO: need to add comments
+
 public class MinioObjectUtils {
     public static String getNameOfCurrentObjectByPath(String path) {
         List<String> parts = Arrays.stream(path.split("/")).toList();
         String res = parts.get(parts.size() - 1);
-        return path.endsWith("/") ? res + "/" : res;
+//        return path.endsWith("/") ? res + "/" : res;
+        return res;
     }
 
     public static String getObjectNameToDisplay(String objectName) {
@@ -22,6 +25,8 @@ public class MinioObjectUtils {
         if (path.isEmpty()) {
             return "";
         }
+
+        targetName = targetName.endsWith("/") ? targetName.substring(0, targetName.length() - 1) : targetName;
 
         List<String> parts = Arrays.stream(path.split("/")).toList();
         int counterOfParts = 0;
