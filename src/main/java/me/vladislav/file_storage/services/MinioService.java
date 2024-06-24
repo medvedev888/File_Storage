@@ -9,12 +9,12 @@ import me.vladislav.file_storage.dto.MinioObjectDTO;
 import me.vladislav.file_storage.dto.file.FileUploadDTO;
 import me.vladislav.file_storage.dto.folder.FolderCreateDTO;
 import me.vladislav.file_storage.dto.folder.FolderDeleteDTO;
-import me.vladislav.file_storage.dto.folder.FoldersDTO;
 import me.vladislav.file_storage.exceptions.file.FileUploadException;
 import me.vladislav.file_storage.exceptions.folder.FolderCreationException;
 import me.vladislav.file_storage.exceptions.folder.FolderDeletionException;
 import me.vladislav.file_storage.exceptions.folder.RetrievingFoldersException;
 import me.vladislav.file_storage.utils.FolderUtils;
+import me.vladislav.file_storage.utils.MinioObjectUtils;
 import me.vladislav.file_storage.utils.PathUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -34,6 +34,54 @@ public class MinioService {
 
     @Value("${spring.minio.client.bucket-name}")
     private String bucketName;
+
+    public List<MinioObjectDTO> getMinioObjects(String path, boolean recursive) {
+        try {
+            List<MinioObjectDTO> listOfFolders = new ArrayList<>();
+
+            Iterable<Result<Item>> results = minioClient.listObjects(ListObjectsArgs.builder()
+                    .bucket(bucketName)
+                    .prefix(path)
+                    .recursive(recursive)
+                    .build()
+            );
+
+            int k = 1;
+            for (Result<Item> result : results) {
+                Item item = result.get();
+
+                String name = MinioObjectUtils.getNameOfCurrentObjectByPath(item.objectName());
+                String currentPath = item.objectName();
+
+                if (name.equals(MinioObjectUtils.getNameOfCurrentObjectByPath(currentPath)) && k == 1) {
+                    k--;
+                } else {
+                    String owner = MinioObjectUtils.getOwnerFolder(currentPath,
+                            name,
+                            true,
+                            FolderUtils.getTheNumberOfTheDuplicateFolderNameByPath(currentPath)
+                    );
+                    String currentPathWithoutCurrentFolder = PathUtils.getPathWithoutCurrentObject(
+                            currentPath,
+                            name,
+                            true,
+                            FolderUtils.getTheNumberOfTheDuplicateFolderNameByPath(currentPath)
+                    );
+
+                    listOfFolders.add(new MinioObjectDTO(
+                            PathUtils.getPathWithoutRootUserFolder(currentPathWithoutCurrentFolder),
+                            MinioObjectUtils.getObjectNameToDisplay(name),
+                            owner,
+                            item.objectName().endsWith("/")
+                    ));
+                }
+            }
+
+            return listOfFolders;
+        } catch (Exception e) {
+            throw new RetrievingFoldersException("Error when retrieving folders.", e);
+        }
+    }
 
     public void createFolder(FolderCreateDTO folderCreateDTO, boolean isCovertOperation) {
         String folderName = folderCreateDTO.getNameOfNewFolder();
@@ -66,7 +114,7 @@ public class MinioService {
             throw new FolderDeletionException("Error when deleting folder. Folder with name " + rootFolderPath + folderName + " not exists.");
         }
 
-        List<MinioObjectDTO> folderList = getFolders(rootFolderPath + folderName, true).getListOfFolders();
+        List<MinioObjectDTO> folderList = getMinioObjects(rootFolderPath + folderName, true);
         List<DeleteObject> objectsForDeleting = new LinkedList<>();
 
         String name;
@@ -107,57 +155,6 @@ public class MinioService {
             return true;
         } catch (Exception e) {
             return false;
-        }
-    }
-
-    public FoldersDTO getFolders(String path, boolean recursive) {
-        try {
-            FoldersDTO foldersDTO = new FoldersDTO();
-            List<MinioObjectDTO> listOfFolders = new ArrayList<>();
-
-            Iterable<Result<Item>> results = minioClient.listObjects(ListObjectsArgs.builder()
-                    .bucket(bucketName)
-                    .prefix(path)
-                    .recursive(recursive)
-                    .build()
-            );
-
-            int k = 1;
-            for (Result<Item> result : results) {
-                Item item = result.get();
-
-                String name = FolderUtils.getNameOfCurrentFolderByPath(item.objectName());
-                String currentPath = item.objectName();
-
-                if (name.equals(FolderUtils.getNameOfCurrentFolderByPath(currentPath)) && k == 1) {
-                    k--;
-                } else {
-                    String owner = FolderUtils.getOwnerFolder(currentPath,
-                            name,
-                            true,
-                            FolderUtils.getTheNumberOfTheDuplicateFolderNameByPath(currentPath)
-                    );
-                    String currentPathWithoutCurrentFolder = PathUtils.getPathWithoutCurrentFolder(
-                            currentPath,
-                            name,
-                            true,
-                            FolderUtils.getTheNumberOfTheDuplicateFolderNameByPath(currentPath)
-                    );
-
-                    listOfFolders.add(new MinioObjectDTO(
-                            PathUtils.getPathWithoutRootUserFolder(currentPathWithoutCurrentFolder),
-                            FolderUtils.getFolderNameToDisplay(name),
-                            owner,
-                            item.objectName().endsWith("/")
-                    ));
-                }
-            }
-
-            foldersDTO.setListOfFolders(listOfFolders);
-
-            return foldersDTO;
-        } catch (Exception e) {
-            throw new RetrievingFoldersException("Error when retrieving folders.", e);
         }
     }
 
