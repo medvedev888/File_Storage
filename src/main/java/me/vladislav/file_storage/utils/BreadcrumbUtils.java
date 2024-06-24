@@ -16,7 +16,7 @@ public class BreadcrumbUtils {
         List<String> listOfLinks = Arrays.stream(path.split("/")).toList();
         for (String link : listOfLinks) {
             linksMap.put(link, linksMap.getOrDefault(link, 0L) + 1);
-            String pathForLink = PathUtils.getPathWithoutCurrentFolder(path, link, true, linksMap.get(link)) + link;
+            String pathForLink = PathUtils.getPathWithoutCurrentObject(path, link, true, linksMap.get(link)) + link;
             if (!pathForLink.isBlank()) {
                 breadcrumbsList.add(Pair.of(link, PathUtils.getValidPath("/" + pathForLink + '/')));
             }
