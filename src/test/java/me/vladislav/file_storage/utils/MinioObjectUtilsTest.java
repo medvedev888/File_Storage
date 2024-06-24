@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class FolderUtilsTest {
+public class MinioObjectUtilsTest {
 
     @Test
     void shouldReturnValidOwnerFolderByTargetName() {
@@ -14,9 +14,9 @@ public class FolderUtilsTest {
         String name2 = "folder";
         String name3 = "haha/";
 
-        String result1 = FolderUtils.getOwnerFolder(path1, name1, true, 1L);
-        String result2 = FolderUtils.getOwnerFolder(path2, name2, false, 123L);
-        String result3 = FolderUtils.getOwnerFolder(path2, name3, false, 123L);
+        String result1 = MinioObjectUtils.getOwnerFolder(path1, name1, true, 1L);
+        String result2 = MinioObjectUtils.getOwnerFolder(path2, name2, false, 123L);
+        String result3 = MinioObjectUtils.getOwnerFolder(path2, name3, false, 123L);
 
         assertEquals("user-1-files/", result1);
         assertEquals("user-1-files/", result2);
@@ -27,7 +27,7 @@ public class FolderUtilsTest {
     void shouldReturnValidNameOfCurrentFolderByPath() {
         String path = "user-1-files/folder/folder-2/";
 
-        String result = FolderUtils.getNameOfCurrentFolderByPath(path);
+        String result = MinioObjectUtils.getNameOfCurrentObjectByPath(path);
 
         assertEquals("folder-2", result);
     }
