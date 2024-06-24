@@ -32,9 +32,9 @@ public class PathUtilsTest {
         String path = "user-1-files/folder-1/folder-1/folder-3/folder-1/";
         String currentFolderName1 = "folder-1";
 
-        String result1 = PathUtils.getPathWithoutCurrentFolder(path, currentFolderName1, true, 2);
-        String result2 = PathUtils.getPathWithoutCurrentFolder(path, currentFolderName1, true, 1);
-        String result3 = PathUtils.getPathWithoutCurrentFolder(path, currentFolderName1, true, 3);
+        String result1 = PathUtils.getPathWithoutCurrentObject(path, currentFolderName1, true, 2L);
+        String result2 = PathUtils.getPathWithoutCurrentObject(path, currentFolderName1, true, 1L);
+        String result3 = PathUtils.getPathWithoutCurrentObject(path, currentFolderName1, true, 3L);
 
         assertEquals("user-1-files/folder-1/", result1);
         assertEquals("user-1-files/", result2);

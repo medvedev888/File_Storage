@@ -3,35 +3,33 @@ package me.vladislav.file_storage.utils;
 public class PathUtils {
 
     /**
-     * @param path                  path containing {@code currentFolderName}
-     * @param currentFolderName     name of current folder
+     * @param path                  path containing {@code currentObjectName}
+     * @param currentObjectName     name of current object
      * @param isNameRepeat          a boolean flag indicating whether a path can have folders with the same name
      * @param numberOfDesiredFolder position of desired folder, should be greater than zero, if {@code isNameRepeat=true}
      * @return valid path (using {@link #getValidPath(String path)}) without {@code currentFolderName}; empty string,
      * if path is empty
      */
-    public static String getPathWithoutCurrentFolder(String path, String currentFolderName, boolean isNameRepeat, Long numberOfDesiredFolder) {
+    public static String getPathWithoutCurrentObject(String path, String currentObjectName, boolean isNameRepeat, Long numberOfDesiredFolder) {
         path = getValidPath(path);
         if (path.isEmpty()) {
             return "";
         }
 
-        currentFolderName = currentFolderName.endsWith("/") ? currentFolderName.substring(0, currentFolderName.length() - 1) : currentFolderName;
-
         if (isNameRepeat) {
             String[] parts = path.split("/");
             StringBuffer result = new StringBuffer();
             for (String part : parts) {
-                if ((part).equals(currentFolderName)) {
+                if ((part).equals(currentObjectName)) {
                     numberOfDesiredFolder--;
                 }
                 result.append(part).append('/');
                 if (numberOfDesiredFolder == 0) {
-                    return result.substring(0, result.toString().lastIndexOf(currentFolderName));
+                    return result.substring(0, result.toString().lastIndexOf(currentObjectName));
                 }
             }
         }
-        return path.substring(0, path.indexOf(currentFolderName));
+        return path.substring(0, path.indexOf(currentObjectName));
     }
 
     /**

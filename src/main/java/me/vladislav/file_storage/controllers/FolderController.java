@@ -6,7 +6,7 @@ import me.vladislav.file_storage.dto.folder.FolderCreateDTO;
 import me.vladislav.file_storage.dto.folder.FolderDeleteDTO;
 import me.vladislav.file_storage.exceptions.folder.FolderCreationException;
 import me.vladislav.file_storage.exceptions.folder.FolderDeletionException;
-import me.vladislav.file_storage.services.FolderService;
+import me.vladislav.file_storage.services.MinioService;
 import me.vladislav.file_storage.services.UserService;
 import me.vladislav.file_storage.utils.PathUtils;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,17 +16,19 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
+@RequestMapping("/folder")
 @RequiredArgsConstructor
 public class FolderController {
 
     private final UserService userService;
-    private final FolderService folderService;
+    private final MinioService minioService;
 
-    @PostMapping("/folder")
+    @PostMapping
     public RedirectView createFolder(
             @AuthenticationPrincipal User user,
             @ModelAttribute("folderCreateDTO") @Valid FolderCreateDTO folderCreateDTO,
@@ -45,13 +47,13 @@ public class FolderController {
 
             folderCreateDTO.setRootFolderPath(PathUtils.getRootPath(folderCreateDTO.getRootFolderPath(), currentUser.getId()));
 
-            folderService.createFolder(folderCreateDTO, false);
+            minioService.createFolder(folderCreateDTO, false);
         }
         redirectAttributes.addFlashAttribute("successMessage", "Folder created successfully");
         return new RedirectView("/?path=" + PathUtils.getPathWithoutRootUserFolder(folderCreateDTO.getRootFolderPath()));
     }
 
-    @DeleteMapping("/folder")
+    @DeleteMapping
     public RedirectView deleteFolder(
             @AuthenticationPrincipal User user,
             @ModelAttribute("folderDeleteDTO") @Valid FolderDeleteDTO folderDeleteDTO,
@@ -59,8 +61,8 @@ public class FolderController {
             RedirectAttributes redirectAttributes
     ) {
         if (bindingResult.hasErrors()) {
-            String errorMessage = bindingResult.getFieldError("nameOfNewFolder") != null ?
-                    bindingResult.getFieldError("nameOfNewFolder").getDefaultMessage() :
+            String errorMessage = bindingResult.getFieldError("folderName") != null ?
+                    bindingResult.getFieldError("folderName").getDefaultMessage() :
                     "Invalid folder name";
 
             throw new FolderDeletionException(errorMessage);
@@ -69,7 +71,7 @@ public class FolderController {
 
             folderDeleteDTO.setRootFolderPath(PathUtils.getRootPath(folderDeleteDTO.getRootFolderPath(), currentUser.getId()));
 
-            folderService.deleteFolder(folderDeleteDTO, currentUser.getId());
+            minioService.deleteFolder(folderDeleteDTO, currentUser.getId());
         }
         redirectAttributes.addFlashAttribute("successMessage", "Folder deleted successfully");
         return new RedirectView("/?path=" + PathUtils.getPathWithoutRootUserFolder(folderDeleteDTO.getRootFolderPath()));

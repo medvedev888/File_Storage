@@ -30,7 +30,8 @@
 <!--    control panel-->
 <div class="container d-flex py-3">
     <div class="container d-flex justify-content-start w-auto">
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#create-folder-modal">Create Folder
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#create-folder-modal">
+            Create Folder
         </button>
     </div>
     <form class="container d-flex w-50">
@@ -38,18 +39,25 @@
         <button class="btn btn-primary" type="submit">Search</button>
     </form>
     <div class="container d-flex justify-content-end w-auto">
-        <button class="me-2 btn btn-primary">Upload File</button>
+        <button class="me-2 btn btn-primary" data-bs-toggle="modal" data-bs-target="#upload-file-modal">
+            Upload File
+        </button>
         <button class="btn btn-primary">Upload Folder</button>
     </div>
 </div>
 
 <div class="container my-4">
-    <ul class="list-group list-group-flush" th:each="folder : ${listOfFolders}">
+    <ul class="list-group list-group-flush" th:each="minioObject : ${listOfMinioObject}">
         <li class="list-group-item d-flex align-items-center my-1 border bg-body rounded">
-            <img th:src="@{/img/folder_image.png}"
+            <img th:if="${minioObject.getIsFolder()}" th:src="@{/img/folder_image.png}"
                  style="width: 1.5rem;" class="d-inline-flex justify-content-start me-4" alt="Folder">
-            <a th:href="@{'/?path=' + ${folder.getRootPath()} + ${folder.getName()} + '/'}"
-               class="d-inline-flex flex-grow-1 text-decoration-none" th:text="${folder.getName()}"></a>
+            <img th:if="${!minioObject.getIsFolder()}" th:src="@{/img/file_image.png}"
+                 style="width: 1.5rem;" class="d-inline-flex justify-content-start me-4" alt="File">
+
+            <a th:if="${minioObject.getIsFolder()}" th:href="@{'/?path=' + ${minioObject.getRootPath()} + ${minioObject.getName()} + '/'}"
+               class="d-inline-flex flex-grow-1 text-decoration-none" th:text="${minioObject.getName()}"></a>
+            <div th:if="${!minioObject.getIsFolder()}" class="d-inline-flex flex-grow-1 text-decoration-none" th:text="${minioObject.getName()}"></div>
+
             <button type="button" class="btn btn-primary btn-sm d-inline-flex justify-content-end"
                     data-bs-toggle="dropdown"
                     aria-expanded="false">
@@ -63,7 +71,7 @@
                 <li th:object="${folderDeleteDTO}">
                     <form th:action="@{/folder}" th:method="delete">
                         <input th:name="rootFolderPath" type="hidden" th:value="${currentPath}">
-                        <input th:name="folderName" type="hidden" th:value="${folder.getName()}">
+                        <input th:name="folderName" type="hidden" th:value="${minioObject.getName()}">
                         <button type="submit" class="dropdown-item">Delete</button>
                     </form>
                 </li>
@@ -74,6 +82,7 @@
 
 <!-- modals -->
 <div th:replace="~{modals/create-folder-modal :: create-folder-modal(currentPath=${currentPath})}"></div>
+<div th:replace="~{modals/upload-file-modal :: upload-file-modal(currentPath=${currentPath})}"></div>
 
 <!-- success display -->
 <div th:replace="~{fragments/alerts/success-alert-fragment :: success-alert-fragment(successMessage=${successMessage})}"></div>

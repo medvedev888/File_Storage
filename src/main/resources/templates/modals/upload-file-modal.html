@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<header>
+    <meta charset="UTF-8">
+    <title>Upload File Modal</title>
+</header>
+<div th:fragment="upload-file-modal" class="modal" tabindex="-1" id="upload-file-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Upload file</h5>
+            </div>
+            <div class="modal-body">
+                <form enctype="multipart/form-data" th:action="@{/file}" th:method="post"
+                      id="upload-file-form" th:object="${fileUploadDTO}" >
+                    <p th:value="${currentPath}"></p>
+                    <input th:name="rootFolderPath" type="hidden" th:value="${currentPath}" />
+                    <input th:name="file" type="file" class="form-control"/>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" form="upload-file-form">Upload</button>
+            </div>
+        </div>
+    </div>
+</div>
+</html>
