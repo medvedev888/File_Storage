@@ -5,6 +5,10 @@ import java.util.List;
 
 public class FolderUtils {
 
+    /**
+     * @param path any path
+     * @return the number of repetitions of the last folder name
+     */
     public static Long getTheNumberOfTheDuplicateFolderNameByPath(String path) {
         path = PathUtils.getValidPath(path);
 
