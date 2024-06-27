@@ -46,6 +46,7 @@
     </div>
 </div>
 
+<!-- folders and files display -->
 <div class="container my-4">
     <ul class="list-group list-group-flush" th:each="minioObject : ${listOfMinioObject}">
         <li class="list-group-item d-flex align-items-center my-1 border bg-body rounded">
@@ -54,9 +55,11 @@
             <img th:if="${!minioObject.getIsFolder()}" th:src="@{/img/file_image.png}"
                  style="width: 1.5rem;" class="d-inline-flex justify-content-start me-4" alt="File">
 
-            <a th:if="${minioObject.getIsFolder()}" th:href="@{'/?path=' + ${minioObject.getRootPath()} + ${minioObject.getName()} + '/'}"
+            <a th:if="${minioObject.getIsFolder()}"
+               th:href="@{'/?path=' + ${minioObject.getRootPath()} + ${minioObject.getName()} + '/'}"
                class="d-inline-flex flex-grow-1 text-decoration-none" th:text="${minioObject.getName()}"></a>
-            <div th:if="${!minioObject.getIsFolder()}" class="d-inline-flex flex-grow-1 text-decoration-none" th:text="${minioObject.getName()}"></div>
+            <div th:if="${!minioObject.getIsFolder()}" class="d-inline-flex flex-grow-1 text-decoration-none"
+                 th:text="${minioObject.getName()}"></div>
 
             <button type="button" class="btn btn-primary btn-sm d-inline-flex justify-content-end"
                     data-bs-toggle="dropdown"
