@@ -7,7 +7,6 @@ import java.util.*;
 public class BreadcrumbUtils {
 
     /**
-     *
      * @param path any path
      * @return {@code List<Pair<String, String>>} where the first string is the name of the link to
      * display and the second is string - valid path for moving between directories
